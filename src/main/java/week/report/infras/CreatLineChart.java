@@ -1,24 +1,7 @@
-package week.report;
+package week.report.infras;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Paint;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
-import javax.swing.SwingUtilities;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.StandardChartTheme;
+import com.google.common.collect.Lists;
+import org.jfree.chart.*;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.labels.ItemLabelAnchor;
@@ -33,13 +16,24 @@ import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.TextAnchor;
+import week.report.domain.ReportData;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 
 /**
- * @Title:创建折线图
  * @author
- * @since   JDK1.6
+ * @Title:创建折线图
  * @history
+ * @since JDK1.6
  */
 public class CreatLineChart {
 
@@ -51,15 +45,18 @@ public class CreatLineChart {
      * 用来对柱状图、折线图、饼图、堆积柱状图、时间序列图的样式进行渲染<br>
      * 设置X-Y坐标轴样式
      * <p>
-     *
      */
-    private static String NO_DATA_MSG = "数据加载失败";
+    private static String OUT_PUT_PATH = "/Users/xiaogangfan/Downloads/weekreport.png";
+    private static String title = "title";
+    private static String xTitle = "时间";
+    private static String yTitle = "指标";
     private static Font FONT = new Font("宋体", Font.PLAIN, 12);
 
     public static Color[] CHART_COLORS = {
-            new Color(31,129,188), new Color(92,92,97), new Color(144,237,125), new Color(255,188,117),
-            new Color(153,158,255), new Color(255,117,153), new Color(253,236,109), new Color(128,133,232),
-            new Color(158,90,102),new Color(255, 204, 102) };//颜色
+            new Color(31, 129, 188), new Color(92, 92, 97), new Color(144, 237, 125), new Color(255, 188, 117),
+            new Color(153, 158, 255), new Color(255, 117, 153), new Color(253, 236, 109), new Color(128, 133, 232),
+            new Color(158, 90, 102), new Color(255, 204, 102)};//颜色
+
     /**
      * 静态代码块
      */
@@ -74,22 +71,24 @@ public class CreatLineChart {
 
     }
 
-    /** TODO  可以通过调用这个方法, 提供对应格式的参数即可生成图片,并存在指定位置
+    /**
+     * TODO  可以通过调用这个方法, 提供对应格式的参数即可生成图片,并存在指定位置
      * 生成一个这先出并保存为png格式,
-     * @param title 图片标题
-     * @param xtitle x轴标题
-     * @param ytitle y轴标题
-     * @param filepath 文件路径+文件名
+     *
+     * @param title     图片标题
+     * @param xtitle    x轴标题
+     * @param ytitle    y轴标题
+     * @param filepath  文件路径+文件名
      * @param categorie 横坐标类型
-     * @param series 数据内容
-     * @param width 图片宽度
-     * @param height 图片高度
+     * @param series    数据内容
+     * @param width     图片宽度
+     * @param height    图片高度
      * @throws Exception
      */
-    public  static void CreateNewLineChartForPng(String title,String xtitle,String ytitle,String filepath,List<String> categorie,List<Serie> series,int width,int height) throws Exception{
-        ChartPanel  chartPanel = new CreatLineChart().createChart(title, xtitle, ytitle, categorie,series);
+    public static void CreateNewLineChartForPng(String title, String xtitle, String ytitle, String filepath, List<String> categorie, List<Serie> series, int width, int height) throws Exception {
+        ChartPanel chartPanel = new CreatLineChart().createChart(title, xtitle, ytitle, categorie, series);
         //将图片保存为png格式
-        saveAsFile(chartPanel.getChart(),filepath,width,height);
+        saveAsFile(chartPanel.getChart(), filepath, width, height);
     }
 
 
@@ -115,7 +114,7 @@ public class CreatLineChart {
         // 绘制颜色绘制颜色.轮廓供应商
         // paintSequence,outlinePaintSequence,strokeSequence,outlineStrokeSequence,shapeSequence
 
-        Paint[] OUTLINE_PAINT_SEQUENCE = new Paint[] { Color.WHITE };
+        Paint[] OUTLINE_PAINT_SEQUENCE = new Paint[]{Color.WHITE};
         // 绘制器颜色源
         DefaultDrawingSupplier drawingSupplier = new DefaultDrawingSupplier(CHART_COLORS, CHART_COLORS, OUTLINE_PAINT_SEQUENCE,
                 DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE, DefaultDrawingSupplier.DEFAULT_OUTLINE_STROKE_SEQUENCE,
@@ -203,22 +202,21 @@ public class CreatLineChart {
      * 设置 折线图样式
      *
      * @param plot
-     * @param isShowDataLabels
-     *            是否显示数据标签 默认不显示节点形状
+     * @param isShowDataLabels 是否显示数据标签 默认不显示节点形状
      */
     public static void setLineRender(CategoryPlot plot, boolean isShowDataLabels) {
         setLineRender(plot, isShowDataLabels, false);
     }
+
     /**
      * 设置折线图样式
      *
      * @param plot
-     * @param isShowDataLabels
-     *            是否显示数据标签
+     * @param isShowDataLabels 是否显示数据标签
      */
     @SuppressWarnings("deprecation")
     public static void setLineRender(CategoryPlot plot, boolean isShowDataLabels, boolean isShapesVisible) {
-        plot.setNoDataMessage(NO_DATA_MSG);
+        plot.setNoDataMessage(OUT_PUT_PATH);
         plot.setInsets(new RectangleInsets(10, 10, 0, 10), false);
         LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
 
@@ -238,7 +236,6 @@ public class CreatLineChart {
 
     /**
      * 设置类别图表(CategoryPlot) X坐标轴线条颜色和样式
-     *
      */
     public static void setXAixs(CategoryPlot plot) {
         Color lineColor = new Color(31, 121, 170);
@@ -249,7 +246,6 @@ public class CreatLineChart {
 
     /**
      * 设置类别图表(CategoryPlot) Y坐标轴线条颜色和样式 同时防止数据无法显示
-     *
      */
     public static void setYAixs(CategoryPlot plot) {
         Color lineColor = new Color(192, 208, 224);
@@ -277,22 +273,22 @@ public class CreatLineChart {
     }
 
     //-----------------------------------------------------------------------------------------------------------------
+
     /**
-     *
      * 折线图
-     *       <p>
-     *       创建图表步骤：<br/>
-     *       1：创建数据集合<br/>
-     *       2：创建Chart：<br/>
-     *       3:设置抗锯齿，防止字体显示不清楚<br/>
-     *       4:对柱子进行渲染，<br/>
-     *       5:对其他部分进行渲染<br/>
-     *       6:使用chartPanel接收<br/>
+     * <p>
+     * 创建图表步骤：<br/>
+     * 1：创建数据集合<br/>
+     * 2：创建Chart：<br/>
+     * 3:设置抗锯齿，防止字体显示不清楚<br/>
+     * 4:对柱子进行渲染，<br/>
+     * 5:对其他部分进行渲染<br/>
+     * 6:使用chartPanel接收<br/>
      *
-     *       </p>
+     * </p>
      */
     //创建折线图图表
-    public DefaultCategoryDataset createDataset(List<String> categorie,List<Serie> series) {
+    public DefaultCategoryDataset createDataset(List<String> categorie, List<Serie> series) {
         // 标注类别
         String[] categories = categorie.toArray(new String[categorie.size()]);
         //横坐标
@@ -311,22 +307,23 @@ public class CreatLineChart {
 
     /**
      * 创建折线图
-     * @param title 折线图标题
-     * @param xtitle x轴标题
-     * @param ytitle y轴标题
+     *
+     * @param title     折线图标题
+     * @param xtitle    x轴标题
+     * @param ytitle    y轴标题
      * @param categorie 横坐标类别
-     * @param series 数据集
+     * @param series    数据集
      * @return
      * @throws Exception
      */
-    public ChartPanel createChart(String title,String xtitle,String ytitle,List<String> categorie,List<Serie> series) throws Exception {
+    public ChartPanel createChart(String title, String xtitle, String ytitle, List<String> categorie, List<Serie> series) throws Exception {
 
         // 2：创建Chart[创建不同图形]
-        JFreeChart chart = ChartFactory.createLineChart(title, xtitle, ytitle, createDataset(categorie,series));
+        JFreeChart chart = ChartFactory.createLineChart(title, xtitle, ytitle, createDataset(categorie, series));
         // 3:设置抗锯齿，防止字体显示不清楚
         CreatLineChart.setAntiAlias(chart);// 抗锯齿
         // 4:对柱子进行渲染[[采用不同渲染]]
-        CreatLineChart.setLineRender(chart.getCategoryPlot(), false,true);//
+        CreatLineChart.setLineRender(chart.getCategoryPlot(), false, true);//
         // 5:对其他部分进行渲染
         CreatLineChart.setXAixs(chart.getCategoryPlot());// X坐标轴渲染
         CreatLineChart.setYAixs(chart.getCategoryPlot());// Y坐标轴渲染
@@ -340,62 +337,36 @@ public class CreatLineChart {
 
     /**
      * 主方法 用来测试  `
+     *
      * @param args
      */
     public static void main(String[] args) {
-//           final JFrame frame = new JFrame();
-//           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//           frame.setSize(1024, 420);
-//           frame.setLocationRelativeTo(null);
-        try {
-            List<String> categorie = null;
-            List<Serie> series = null;
-            //横坐标
-            String[] categories = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-            series = new Vector<Serie>();
-            // 柱子名称：柱子所有的值集合
-            //纵坐标
-            series.add(new Serie("Tokyo", new Double[] { 49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4 }));
-            series.add(new Serie("New York", new Double[] { 83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3 }));
-            series.add(new Serie("London", new Double[] { 48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2 }));
-            series.add(new Serie("Berlin", new Double[] { 42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1 }));
-
-            ChartPanel  chartPanel = new CreatLineChart().createChart(NO_DATA_MSG, NO_DATA_MSG, NO_DATA_MSG, categorie,series);
-//            frame.getContentPane().add(chartPanel);
-//            frame.setVisible(true);
-            //将图片保存为png格式 
-//            saveAsFile(chartPanel.getChart(),"D:\\1\\lol.png",900,500);
-            CreateNewLineChartForPng("lol2.png", NO_DATA_MSG, NO_DATA_MSG, NO_DATA_MSG, new ArrayList<>(categorie), series, 900, 500);
-
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-
-        //swing 运行
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // 创建图形
-                try {
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        CreatLineChart creatLineChart = new CreatLineChart();
+        List<String> categories = new ArrayList<>();
+        categories.add("Jan");
+        categories.add("Feb");
+        List<Serie> series = Lists.newArrayList();
+        //横坐标
+        // 柱子名称：柱子所有的值集合
+        //纵坐标
+        series.add(new Serie("Tokyo", new Double[]{49.9, 71.5}));
+        series.add(new Serie("New York", new Double[]{83.6, 78.8}));
+//        series.add(new Serie("London", new Double[]{48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2}));
+//        series.add(new Serie("Berlin", new Double[]{42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1}));
+        creatLineChart.createReport(categories, series,"chart");
     }
-
 
 
     /**
      * 将图表保存为PNG、JPEG图片
-     * @param chart  折线图对象
+     *
+     * @param chart      折线图对象
      * @param outputPath 文件保存路径, 包含文件名
-     * @param weight  宽
-     * @param height 高
+     * @param weight     宽
+     * @param height     高
      * @throws Exception
      */
-    public static void saveAsFile(JFreeChart chart, String outputPath, int weight, int height)throws Exception {
+    public static void saveAsFile(JFreeChart chart, String outputPath, int weight, int height) throws Exception {
         FileOutputStream out = null;
         File outFile = new File(outputPath);
         if (!outFile.getParentFile().exists()) {
@@ -419,6 +390,40 @@ public class CreatLineChart {
     }
 
 
+    public void createReport(List<String> categories, List<Serie> series,String title) {
+        final JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1024, 420);
+        frame.setLocationRelativeTo(null);
+        try {
+
+            ChartPanel chartPanel = new CreatLineChart().createChart(title, xTitle, yTitle, categories, series);
+            frame.getContentPane().add(chartPanel);
+            frame.setVisible(true);
+//            saveAsFile(chartPanel.getChart(),"/Users/xiaogangfan/Downloads/weekreport.png",900,500);
+//            CreateNewLineChartForPng("lol2.png", NO_DATA, NO_DATA, OUT_PUT_PATH, new ArrayList<>(categorie), series, 900, 500);
+
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
 
 
+    public void createReport(ReportData reportData) {
+        final JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1024, 420);
+        frame.setLocationRelativeTo(null);
+        try {
+
+            ChartPanel chartPanel = new CreatLineChart().createChart(reportData.getTitle(), reportData.getxTitle(), reportData.getyTitle(), reportData.getX(), reportData.getY());
+            frame.getContentPane().add(chartPanel);
+            frame.setVisible(true);
+//            saveAsFile(chartPanel.getChart(),"/Users/xiaogangfan/Downloads/weekreport.png",900,500);
+//            CreateNewLineChartForPng("lol2.png", NO_DATA, NO_DATA, OUT_PUT_PATH, new ArrayList<>(categorie), series, 900, 500);
+
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
 }

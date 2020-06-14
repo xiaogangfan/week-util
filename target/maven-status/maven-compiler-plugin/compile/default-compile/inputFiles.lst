@@ -1,2 +1,13 @@
-/Users/fanxiaogang/Documents/code/fund/direct/work-util/src/main/java/week/report/CreatLineChart.java
-/Users/fanxiaogang/Documents/code/fund/direct/work-util/src/main/java/week/report/Serie.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/test/AnnotationDemo2.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/infras/Serie.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/domain/IndicatorEnum.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/inter/ShowReport.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/infras/CreatLineChart.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/test/MultiY.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/test/DoubleY.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/infras/TestJFreeChart.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/domain/WeekData.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/domain/WeekIndicator.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/infras/FileUtils.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/domain/ReportData.java
+/Users/xiaogangfan/Documents/code/work-util/src/main/java/week/report/domain/Indicator.java
