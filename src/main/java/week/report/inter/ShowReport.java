@@ -2,6 +2,7 @@ package week.report.inter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import week.report.domain.CompareTypeEnum;
 import week.report.domain.IndicatorEnum;
 import week.report.domain.ReportData;
 import week.report.domain.WeekData;
@@ -33,15 +34,15 @@ public class ShowReport {
 
         // 业务效率
 //        CompletableFuture.supplyAsync(() -> {
-            try {
-                Thread.sleep(500);
-                getAvaiableChartData(originData);
+        try {
+            Thread.sleep(500);
+            getAvaiableChartData(originData);
 
-                Thread.sleep(500);
-                getRateChartData(originData);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(500);
+            getRateChartData(originData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //            return "supplyAsyncWithSleep Thread Id : " + Thread.currentThread();
 //        });
     }
@@ -54,6 +55,12 @@ public class ShowReport {
 
         xList.add("last week");
         xList.add("this week");
+        int lastIndex = getLastIndex(originData);
+        System.out.println("- 系统可用性");
+        System.out.println(getItem(originData,IndicatorEnum.余额调节表对账TPS,CompareTypeEnum.Rate));
+        System.out.println(getItem(originData,IndicatorEnum.资金帐写入最高TPS,CompareTypeEnum.Rate));
+        System.out.println(getItem(originData,IndicatorEnum.余额调节表对账TP99,CompareTypeEnum.Rate));
+        System.out.println(getItem(originData,IndicatorEnum.资金帐写入最高TP99,CompareTypeEnum.Rate));
         leftYData.add(new Serie(IndicatorEnum.余额调节表对账TPS.getName(), originData.get(IndicatorEnum.余额调节表对账TPS.getName())));
         leftYData.add(new Serie(IndicatorEnum.资金帐写入最高TPS.getName(), originData.get(IndicatorEnum.资金帐写入最高TPS.getName())));
         rightYData.add(new Serie(IndicatorEnum.余额调节表对账TP99.getName(), originData.get(IndicatorEnum.余额调节表对账TP99.getName())));
@@ -69,22 +76,25 @@ public class ShowReport {
         DoubleY.create(reportData);
     }
 
-    private static void getAvaiableChartDataTP99(List<String> categories, List<Serie> series, Map<String, BigDecimal[]> originData, CreatLineChart creatLineChart) {
-        categories.clear();
-        series.clear();
-        categories.add("last week");
-        categories.add("this week");
-        series.add(new Serie(IndicatorEnum.余额调节表对账TP99.getName(), originData.get(IndicatorEnum.余额调节表对账TP99.getName())));
-        series.add(new Serie(IndicatorEnum.资金帐写入最高TP99.getName(), originData.get(IndicatorEnum.资金帐写入最高TP99.getName())));
-
-        ReportData reportData = new ReportData();
-        reportData.setxTitle("时间（最近x周）");
-        reportData.setyTitle("TP99（ms）");
-        reportData.setTitle("系统可用性TP99");
-        reportData.setY(series);
-        reportData.setX(categories);
-        creatLineChart.createReport(reportData);
-    }
+//    private static void getAvaiableChartDataTP99(List<String> categories, List<Serie> series, Map<String, BigDecimal[]> originData, CreatLineChart creatLineChart) {
+//        categories.clear();
+//        series.clear();
+//        categories.add("last week");
+//        categories.add("this week");
+//        System.out.println("- 系统可用性");
+//        System.out.println(getItem(originData, IndicatorEnum.余额调节表对账TP99));
+//        System.out.println(getItem(originData, IndicatorEnum.资金帐写入最高TP99));
+//        series.add(new Serie(IndicatorEnum.余额调节表对账TP99.getName(), originData.get(IndicatorEnum.余额调节表对账TP99.getName())));
+//        series.add(new Serie(IndicatorEnum.资金帐写入最高TP99.getName(), originData.get(IndicatorEnum.资金帐写入最高TP99.getName())));
+//
+//        ReportData reportData = new ReportData();
+//        reportData.setxTitle("时间（最近x周）");
+//        reportData.setyTitle("TP99（ms）");
+//        reportData.setTitle("系统可用性TP99");
+//        reportData.setY(series);
+//        reportData.setX(categories);
+//        creatLineChart.createReport(reportData);
+//    }
 
     private static void getRateChartData(Map<String, BigDecimal[]> originData) {
         CreatLineChart creatLineChart = new CreatLineChart();
@@ -93,6 +103,11 @@ public class ShowReport {
 
         xList.add("last week");
         xList.add("this week");
+        System.out.println("- 业务效率(百分比)");
+        System.out.println(getItem(originData, IndicatorEnum.自动对账率));
+        System.out.println(getItem(originData, IndicatorEnum.资金调拨自动签收率));
+        System.out.println(getItem(originData, IndicatorEnum.境内付款成功率));
+        System.out.println(getItem(originData, IndicatorEnum.境外付款成功率));
         yList.add(new Serie(IndicatorEnum.自动对账率.getName(), originData.get(IndicatorEnum.自动对账率.getName())));
         yList.add(new Serie(IndicatorEnum.资金调拨自动签收率.getName(), originData.get(IndicatorEnum.资金调拨自动签收率.getName())));
         yList.add(new Serie(IndicatorEnum.境内付款成功率.getName(), originData.get(IndicatorEnum.境内付款成功率.getName())));
@@ -111,8 +126,15 @@ public class ShowReport {
         List<Serie> rightYData = Lists.newArrayList();
         List<String> xList = new ArrayList<>();
 
+        int lastIndex = getLastIndex(originData);
+
         xList.add("last week");
         xList.add("this week");
+        System.out.println("- 业务量");
+        System.out.println(getItem(originData, IndicatorEnum.余额调节表对账总量,CompareTypeEnum.Rate));
+        System.out.println(getItem(originData, IndicatorEnum.资金帐写入总量,CompareTypeEnum.Rate));
+        System.out.println(getItem(originData, IndicatorEnum.境内付款总量,CompareTypeEnum.Rate));
+        System.out.println(getItem(originData, IndicatorEnum.境外付款总量,CompareTypeEnum.Rate));
         leftYData.add(new Serie(IndicatorEnum.余额调节表对账总量.getName(), originData.get(IndicatorEnum.余额调节表对账总量.getName())));
         leftYData.add(new Serie(IndicatorEnum.资金帐写入总量.getName(), originData.get(IndicatorEnum.资金帐写入总量.getName())));
         rightYData.add(new Serie(IndicatorEnum.境内付款总量.getName(), originData.get(IndicatorEnum.境内付款总量.getName())));
@@ -124,6 +146,49 @@ public class ShowReport {
         reportData.setRightY(rightYData);
         reportData.setTitle("业务量");
         DoubleY.create(reportData);
+    }
+
+    private static String getItem(Map<String, BigDecimal[]> originData, IndicatorEnum indicatorEnum) {
+        return getItem(originData, indicatorEnum, CompareTypeEnum.Num);
+    }
+
+    private static String getItem(Map<String, BigDecimal[]> originData, IndicatorEnum indicatorEnum, CompareTypeEnum compareTypeEnum) {
+        int lastIndex = getLastIndex(originData);
+        int last2Index = getLast2Index(originData);
+        BigDecimal lastData = originData.get(indicatorEnum.getName())[lastIndex];
+        BigDecimal last2Data = originData.get(indicatorEnum.getName())[last2Index];
+        String mark = getDiff(last2Data, lastData, compareTypeEnum);
+        return indicatorEnum.getName() + ":" + originData.get(indicatorEnum.getName())[lastIndex]
+                + mark;
+    }
+
+    private static String getDiff(BigDecimal last2Data, BigDecimal lastData, CompareTypeEnum compareTypeEnum) {
+        String diff = "";
+        if (CompareTypeEnum.Num.equals(compareTypeEnum)) {
+            diff = "" + lastData.subtract(last2Data).setScale(4, BigDecimal.ROUND_HALF_UP
+            ).abs().doubleValue();
+        } else if (CompareTypeEnum.Rate.equals(compareTypeEnum)) {
+            diff = "" + new BigDecimal(100).multiply(lastData.subtract(last2Data).divide(lastData,4, BigDecimal.ROUND_HALF_UP).setScale(4, BigDecimal.ROUND_HALF_UP
+            )).abs().doubleValue()+"%";
+        }
+        String mark = "(环比上周" + getTrend(lastData,last2Data) + diff + ")";
+        return mark;
+    }
+
+    private static String getTrend(BigDecimal lastData, BigDecimal last2Data) {
+        if(lastData.doubleValue() == last2Data.doubleValue()){
+            return "持平";
+        }else{
+            return (lastData.doubleValue() > last2Data.doubleValue() ? "上升" : "下降");
+        }
+    }
+
+    private static int getLastIndex(Map<String, BigDecimal[]> originData) {
+        return originData.get(IndicatorEnum.余额调节表对账总量.getName()).length - 1;
+    }
+
+    private static int getLast2Index(Map<String, BigDecimal[]> originData) {
+        return originData.get(IndicatorEnum.余额调节表对账总量.getName()).length - 2;
     }
 
     private static Map<String, BigDecimal[]> getData() {
@@ -144,7 +209,7 @@ public class ShowReport {
         Matcher matcher = pattern.matcher(data);
         int i = 0;
         while (matcher.find()) {
-            System.out.println(indicatorEnum.getName() + "=" + matcher.group(indicatorEnum.getRegIndex()));
+//            System.out.println(indicatorEnum.getName() + "=" + matcher.group(indicatorEnum.getRegIndex()));
             arr[i] = new BigDecimal(matcher.group(indicatorEnum.getRegIndex()));
             i++;
         }
