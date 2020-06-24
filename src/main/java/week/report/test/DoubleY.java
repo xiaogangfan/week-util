@@ -68,7 +68,7 @@ public class DoubleY extends ApplicationFrame {
 
     private static JFreeChart createChart(ReportData reportData) {
         XYDataset xydataset = createDatasetLeft(reportData);
-        JFreeChart jfreechart = ChartFactory.createXYLineChart("", "最近两周 ", reportData.getyLeftTitle(), xydataset, PlotOrientation.VERTICAL, false, true, false);
+        JFreeChart jfreechart = ChartFactory.createXYLineChart("", "最近"+reportData.getX().size()+"周 ", reportData.getyLeftTitle(), xydataset, PlotOrientation.VERTICAL, false, true, false);
         XYPlot xyplot = (XYPlot) jfreechart.getPlot();
         NumberAxis numberaxis = (NumberAxis) xyplot.getRangeAxis();
         numberaxis.setAutoRangeIncludesZero(false);
